@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 const schema = require('./schema');
 
+const Admin = mongoose.model('Admin',schema.adminSchema)
 
 const User = mongoose.model('User',schema.userSchema);
 const Post = mongoose.model('Post',schema.postSchema);
@@ -11,6 +12,7 @@ const ReplyComment  = mongoose.model('ReplyComment',schema.replyCommentSchema);
 
 
 module.exports   = {
+    Admin:Admin,
     User : User,
     Post : Post,
     Comment:Comment,

@@ -252,7 +252,13 @@ const postArticle = async (req,res)=>{
  
 
     //getting image from uploads folder
-    const imagePath = req.file.path;
+    let imagePath ;
+    if(req.file){
+        imagePath = req.file.path;
+    }else{
+        imagePath = null;
+    }
+    
     //const imageBinaryData = fs.readFileSync(imagePath);
     data.imagePath = imagePath
     console.log(data.imagePath);
@@ -300,8 +306,17 @@ const postComment = async (req,res)=>{
 
 }
 
-const getSingleArticle = (req,res)=>{
+const getSingleArticle = async (req,res)=>{
 
+
+    console.log("Incomming request for article",req.params);
+    const articleId = req.params.articleId;
+    try {
+        const article = await database.getSingleArticle(articleId);
+        return res.status(200).json({article});
+    } catch (error) {
+        
+    }
 
 }
 

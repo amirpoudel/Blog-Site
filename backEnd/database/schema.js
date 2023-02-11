@@ -1,5 +1,27 @@
 const {Schema, isObjectIdOrHexString}  = require('mongoose');
 
+//------------------------------------Schema For Admin----------------------------
+
+const adminSchema = new Schema({
+    name:{
+        type:String,
+        required:true,
+    },
+    email:{
+        type:String,
+        require:true,
+        unique:true,
+    },
+    password:{
+        type:String,
+        require:true,
+    }
+
+},{timestamps:true})
+
+
+//-----------------------------------Schema For User--------------------------------
+
 const userSchema = new Schema({
     name : {
         type:String,
@@ -12,7 +34,7 @@ const userSchema = new Schema({
     },
     password : {
         type:String,
-        required:true,
+        require:true,
         
     },
     posts:[{type:Schema.Types.ObjectId,ref:'Post'}],
@@ -41,13 +63,7 @@ const postSchema = new Schema({
         type:String,
         require:true,
     },
-    // image:{
-    //     // data:Buffer,
-    //     // contentType:String,
-      
-   
-    // },
-    //temp solution for image upload - save image path 
+    
     imagePath:{
         type:String,
     },
@@ -56,6 +72,10 @@ const postSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:'Comment',
     }],
+    views:{
+        type:Number,
+        default:0,
+    },
 
     date:{
         type:Date,
@@ -121,6 +141,9 @@ const replyCommentSchema = new Schema({
 },{timestamps:true})
 
 module.exports = {
+    //export admin'
+    adminSchema:adminSchema,
+    //export user 
     userSchema : userSchema,
     postSchema : postSchema,
     commentSchema:commentSchema,

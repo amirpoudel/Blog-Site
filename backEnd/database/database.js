@@ -7,6 +7,40 @@ async function connect(){
     await mongoose.connect(url);
 }
 
+//---------------------------------------------------ADMIN CONTROLLER------------------------------------------------
+
+
+async function createAdmin(name,email,password){
+
+    try {
+        const admin = new model.Admin({
+            name:name,
+            email:email,
+            password:password
+        })
+        await admin.save();
+        
+    } catch (error) {
+        return new Error(error)
+    }
+
+}
+
+async function findAdminByEmail(email){
+    try {
+        
+        const adminData = await model.Admin.findOne({email:email});
+        return adminData;
+
+    } catch (error) {
+        
+    }
+}
+
+
+
+//------------------------------------------------------USER CONTROLLER-----------------------------------------------
+
 //-------------------Insert Data -------------------
 
 async function createUser(name,email,password){
@@ -100,7 +134,7 @@ async function createComment(userId,articleId,comment){
 }
 
 
-
+//----------------------Global Controller------------------------------
 
 
 //get all articles 
@@ -117,10 +151,22 @@ async function getArticles(){
 
 async function getSingleArticle(id){
     try {
-        const article = await model.Post.findById(id).populate('comments');
+        //find post and update the views 
+        const article = await model.Post.findByIdAndUpdate(id).populate('comments');
+        
         return article;
     } catch (error) {
         return new Error(error);
+    }
+}
+
+// update vies
+async function updateViews(articleId){
+    try {
+       const res =  await model.Post.updateOne({_id:articleId},{$inc:{views:1}});//update view count
+        console.log(res);
+    } catch (error) {
+        
     }
 }
 
@@ -134,5 +180,11 @@ module.exports = {
     createComment:createComment,
     getArticles:getArticles,
     getSingleArticle:getSingleArticle,
+    updateViews:updateViews,
+
+
+    //admin related function
+    createAdmin:createAdmin,
+    findAdminByEmail:findAdminByEmail,
 
 }

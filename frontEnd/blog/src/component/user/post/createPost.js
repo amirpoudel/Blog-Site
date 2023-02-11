@@ -18,7 +18,10 @@ export default function CreatePost({ author }) {
   async function sendPostRequest() {
 
     let formData = new FormData();
-    formData.append("image",image,"img.jpg");
+    if(image){
+      formData.append("image",image,"img.jpg");
+    }
+    
     formData.append("post",JSON.stringify(post));
     
     

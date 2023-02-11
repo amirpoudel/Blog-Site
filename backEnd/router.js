@@ -5,14 +5,21 @@ const userController = require('./controller/userController');
 const globalController = require('./controller/globalController')
 const router = express.Router();
 const {upload} = require('./controller/fileController');// multer storage....
+const adminController = require('./controller/adminController');
 //home page
 // router.get("/",(req,res)=>{
 //     res.send("Hello World From Just Another Sever")
 // })
 
-
-
 router.get("/",globalController.getArticles)
+
+
+//Handle Request From Admin
+
+router.post("/admin/register",adminController.registration);
+router.post("/admin/login",adminController.login);
+router.post("/admin",adminController.verifyToken);
+
 
 //Handle request From User Site
 router.post("/login",userController.login)

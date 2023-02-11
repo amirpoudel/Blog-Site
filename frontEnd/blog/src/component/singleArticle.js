@@ -89,8 +89,7 @@ export default function SingleArticle(props) {
   return (
     <>
       <div className="container">
-        <h3>Hello World</h3>
-        {article && <h2> ID:{id}</h2>}
+     
         {article && <h2>Title: {article.title}</h2>}
 
         {article && (
