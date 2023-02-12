@@ -3,9 +3,18 @@ import React, { useState } from "react";
 import axios from 'axios';
 import './register.css'
 import { set } from "mongoose";
-export default function UserLogin() {
+export default function Register(props) {
 
 
+    let url = process.env.REACT_APP_URL
+
+    if(props.access=='user'){
+        url = process.env.REACT_APP_URL+"register";
+      }
+      if(props.access=='admin'){
+        url = process.env.REACT_APP_URL+"admin/register";
+      }
+      console.log(url);
     const [user, setUser] = useState({
         name: "",
         email: "",
@@ -19,7 +28,7 @@ export default function UserLogin() {
     //--------axios request
 
     async function submit() {
-        const url = 'http://localhost:5000/register';
+        //const url = 'http://localhost:5000/register';
         
         axios.post(url, user).catch((err) => {
             console.log(err);

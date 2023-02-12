@@ -5,9 +5,20 @@ import { redirect,useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 
-export default function AdminLogin() {
+
+export default function Login(props) {
 
   const dispatch = useDispatch();
+  console.log(props);
+  let url = process.env.REACT_APP_URL;
+  if(props.access=='user'){
+    url = process.env.REACT_APP_URL+"login";
+  }
+  if(props.access=='admin'){
+    url = process.env.REACT_APP_URL+"admin/login";
+  }
+  console.log(url);
+  console.log(`${process.env.REACT_APP_URL}`)
 
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -23,7 +34,7 @@ export default function AdminLogin() {
   //--------axios request
 
   async function submit() {
-    const url = "http://localhost:5000/admin/login";
+    //const url = "http://localhost:5000/login";
     // const data = {
     //     user : userName,
     //     password : password
@@ -68,7 +79,11 @@ export default function AdminLogin() {
         type:"login",
         payload:true,
       })
-      navigate('/admin');
+      
+
+      navigate(`/${props.access}`)
+      
+      
     });
   };
 
@@ -107,7 +122,7 @@ export default function AdminLogin() {
       //Generate By Chat GPT
       <div className="login-container">
         <div className="form">
-          <h1>Admin Login</h1>
+          <h1>{`${props.access.toUpperCase()} Login`}</h1>
           <div className="form-group">
             <label htmlFor="userName">Username</label>
             <input

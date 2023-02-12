@@ -33,6 +33,24 @@ async function findAdminByEmail(email){
         return adminData;
 
     } catch (error) {
+        return new Error(error);
+    }
+}
+
+async function findAdminById(id){
+    try {
+        const adminData = await model.Admin.findById(id,"-password")
+        return adminData;
+    } catch (error) {
+        return new Error(error);
+    }
+}
+
+async function findAllUsers(){
+    try {
+        let allUsers =  await model.User.find({},"-password").populate('posts');
+        return allUsers;
+    } catch (error) {
         
     }
 }
@@ -186,5 +204,7 @@ module.exports = {
     //admin related function
     createAdmin:createAdmin,
     findAdminByEmail:findAdminByEmail,
+    findAdminById:findAdminById, //not returning password
+    findAllUsers:findAllUsers,
 
 }
