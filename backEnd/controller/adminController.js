@@ -31,10 +31,21 @@ const getAllUsers = async (req,res)=>{
     }
 }
 
+const getTotalPosts = async(req,res)=>{
+    try {
+        let totalPosts = await database.totalPosts();
+        console.log("Total Posts is ",totalPosts);
+        return res.status(200).json({totalPosts});
+    } catch (error) {
+        
+    }
+}
+
 
 
 module.exports={
     getAdmin:getAdmin,
     getAllUsers:getAllUsers,
+    getTotalPosts:getTotalPosts,
 }
 

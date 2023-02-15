@@ -8,6 +8,7 @@ const User = mongoose.model('User',schema.userSchema);
 const Post = mongoose.model('Post',schema.postSchema);
 const Comment = mongoose.model('Comment',schema.commentSchema);
 const ReplyComment  = mongoose.model('ReplyComment',schema.replyCommentSchema);
+const Visitor  = mongoose.model('Visitor',schema.visitorsSchema)
 
 
 
@@ -17,4 +18,5 @@ module.exports   = {
     Post : Post,
     Comment:Comment,
     ReplyComment:ReplyComment,
+    Visitor:Visitor,
 }

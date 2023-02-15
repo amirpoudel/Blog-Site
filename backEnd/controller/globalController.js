@@ -48,7 +48,13 @@ const getSingleArticle  = async (req,res)=>{
 
 }
 
+const info  = async(req,res)=>{
+    console.log("The Comming Info Req,",req.body);
+    await database.visitors(req.body);
+}
+
 module.exports={
     getArticles:getArticles,
     getSingleArticle:getSingleArticle,
+    info:info,
 }

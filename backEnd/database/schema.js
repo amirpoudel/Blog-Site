@@ -140,6 +140,20 @@ const replyCommentSchema = new Schema({
 
 },{timestamps:true})
 
+
+//visitors information
+
+const visitorsSchema= new Schema({
+    ip:String,
+    city:String,
+    region:String,
+    country_name:String,
+    latitude:String,
+    longitude:String,
+    org:String,
+})
+
+
 module.exports = {
     //export admin'
     adminSchema:adminSchema,
@@ -148,5 +162,6 @@ module.exports = {
     postSchema : postSchema,
     commentSchema:commentSchema,
     replyCommentSchema:replyCommentSchema,
+    visitorsSchema:visitorsSchema,
 
 }

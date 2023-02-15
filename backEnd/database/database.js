@@ -48,7 +48,7 @@ async function findAdminById(id){
 
 async function findAllUsers(){
     try {
-        let allUsers =  await model.User.find({},"-password").populate('posts');
+        let allUsers =  await model.User.find({},["-password","-posts"]);
         return allUsers;
     } catch (error) {
         
@@ -188,6 +188,45 @@ async function updateViews(articleId){
     }
 }
 
+async function totalUsers(){
+    try {
+        
+    } catch (error) {
+        
+    }
+}
+async function totalPosts(){
+    try {
+        const res = await model.Post.estimatedDocumentCount();
+        return res;
+    } catch (error) {
+        return new Error(error);
+    }
+}
+async function totalVisits(){
+
+}
+
+async function visitors(info){
+    try {
+        const res = await model.Visitor(
+            {
+                ip:info.ip,
+                city:info.city,
+                region:info.region,
+                country_name:info.country_name,
+                latitude:info.latitude,
+                longitude:info.longitude,
+                org:info.org,
+            }
+        );
+        console.log(res);
+        await res.save();
+    } catch (error) {
+        return new Error(error);
+    }
+}
+
 
 module.exports = {
     connect : connect,
@@ -206,5 +245,13 @@ module.exports = {
     findAdminByEmail:findAdminByEmail,
     findAdminById:findAdminById, //not returning password
     findAllUsers:findAllUsers,
+
+
+    //counting related function,
+    totalPosts:totalPosts,
+
+
+    //global controller
+    visitors:visitors,
 
 }

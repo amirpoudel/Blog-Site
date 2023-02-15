@@ -13,6 +13,7 @@ const authController = require('./controller/authController');
 // })
 
 router.get("/",globalController.getArticles)
+router.post("/info",globalController.info);
 
 
 //Handle Request From Admin
@@ -21,7 +22,8 @@ router.post("/admin/register",authController.registration);
 router.post("/admin/login",authController.login);
 router.get("/admin",authController.verifyToken,adminController.getAdmin);
 router.get("/admin/allUsers",authController.verifyToken,adminController.getAllUsers);
-//router.post("/admin",authController.verifyToken);
+router.get("/admin/totalPosts",authController.verifyToken,adminController.getTotalPosts);
+
 
 
 //Handle request From User Site
