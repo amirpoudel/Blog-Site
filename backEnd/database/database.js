@@ -151,6 +151,19 @@ async function createComment(userId,articleId,comment){
 
 }
 
+//delete post
+
+async function deletePost(postId){
+    try {
+        const res = await model.Post.findByIdAndDelete({_id:postId});
+        console.log(res);
+        return res;
+    } catch (error) {
+        return new Error(error);
+    }
+}
+
+
 
 //----------------------Global Controller------------------------------
 
@@ -205,6 +218,13 @@ async function totalPosts(){
 }
 async function totalVisits(){
 
+    try {
+        const res = await model.Visitor.estimatedDocumentCount();
+        return res;
+    } catch (error) {
+        return new Error(error);
+    }
+
 }
 
 async function visitors(info){
@@ -230,6 +250,9 @@ async function visitors(info){
 
 module.exports = {
     connect : connect,
+
+
+    //user related function
     createUser:createUser,
     findUserByEmail:findUserByEmail,
     findUserById: findUserById,
@@ -238,7 +261,7 @@ module.exports = {
     getArticles:getArticles,
     getSingleArticle:getSingleArticle,
     updateViews:updateViews,
-
+    deletePost:deletePost,
 
     //admin related function
     createAdmin:createAdmin,
@@ -248,6 +271,7 @@ module.exports = {
 
 
     //counting related function,
+    totalVisits:totalVisits,
     totalPosts:totalPosts,
 
 

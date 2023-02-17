@@ -41,11 +41,24 @@ const getTotalPosts = async(req,res)=>{
     }
 }
 
+const getTotalVisits = async (req,res)=>{
+    
+    try {
+        let totalVisits = await database.totalVisits();
+        console.log("Total Visits In Site ",totalVisits);
+        return res.status(200).json({totalVisits});
+    } catch (error) {
+        
+    }
+
+}
+
 
 
 module.exports={
     getAdmin:getAdmin,
     getAllUsers:getAllUsers,
     getTotalPosts:getTotalPosts,
+    getTotalVisits:getTotalVisits,
 }
 

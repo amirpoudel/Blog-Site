@@ -24,6 +24,7 @@ export default function Admin(){
     const [allUsers,setAllUsers] = useState([]);//storing all users data
     
     const [total_post,setTotalPost] = useState();
+    const [total_visits,setTotalVisits]  = useState();
   
     async function refreshToken(){
         const res = await axios.get(url+'refreshToken',{withCredentials:true}).catch((err)=>{
@@ -58,14 +59,26 @@ export default function Admin(){
         return data;
     }
     async function getTotalPosts(){
-        const res = await axios.get(url+'admin/totalPosts',{withCredentials:true}).catch((err)=>{
-            console.log(err);
-        })
-        if(!res){
-            return null;
+        try {
+            const res = await axios.get(url+'admin/totalPosts',{withCredentials:true})
+            console.log(res.data);
+            setTotalPost(res.data.totalPosts);
+        } catch (error) {
+            console.log(error)
         }
-        const data = await res.data;
-        return data;
+        
+    }
+
+    async function getTotalVisits(){
+        try {
+            const res = await axios.get(url+'admin/totalVisits',{withCredentials:true});
+            console.log(res.data);
+            setTotalVisits(res.data.totalVisits);
+
+        } catch (error) {
+            console.log(error);
+        }
+        
     }
 
     async function logoutRequest(){
@@ -96,7 +109,7 @@ export default function Admin(){
         
     }
 
-    useEffect(()=>{
+    useEffect( ()=>{
         if(firstRender){
             firstRender = false;
             sendRequest().then((data)=>{
@@ -121,14 +134,9 @@ export default function Admin(){
 
         })
 
-        getTotalPosts().then((data)=>{
-            if(!data){
-                console.log(data);
-                return ;
-            }
-            console.log("The Total Post",data)
-            setTotalPost(data.totalPosts)
-        })
+         getTotalPosts();
+
+         getTotalVisits();
         
         let interveral = setInterval(()=>{
             refreshToken().then((data)=>{
@@ -149,7 +157,7 @@ export default function Admin(){
           <button className="secondary-button" onClick={logoutHandle}>Log out</button>
           </Link>
            }    
-
+            <h1>Total Site Visits - {total_visits}</h1>
             <h1>Total Posts - {total_post}</h1>
              <h1>Users - {allUsers.length}</h1>
            

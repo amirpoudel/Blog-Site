@@ -1,13 +1,14 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+
+import React,{ useEffect, useState } from "react";
+import {  useParams,useNavigate } from "react-router-dom";
 import "./singleArticleView.css";
 import ShowComment from "../../showComment";
 
 
 export default function SingleArticleForUser(props) {
 
-
+  const navigate = useNavigate();
 
   let { id } = useParams();//this hold post id ;
 
@@ -36,6 +37,15 @@ export default function SingleArticleForUser(props) {
   }
  
 
+  //------------------ Event Handling------------------------------
+
+  async function deleteHandle(){
+
+    const res  = await axios.delete(`${url}post/${id}`,{withCredentials:true});
+    alert(res.data.message);
+    navigate("/user");
+
+  }
  
   
 
@@ -75,6 +85,10 @@ export default function SingleArticleForUser(props) {
             <h2>Comments</h2>
             <ShowComment comments = {article.comments}/>
           </div>
+        }
+        {
+          article && 
+          <button type="button" className="btn btn-delete btn-danger" onClick={deleteHandle} >Delete</button>
         }
        
         

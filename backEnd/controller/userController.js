@@ -120,6 +120,19 @@ const getSingleArticle = async (req,res)=>{
 
 }
 
+const deletePost = async(req,res)=>{
+    console.log("This post should be deleted",req.params);
+
+    const postId = req.params.postId;
+
+    try {
+        const response = await database.deletePost(postId);
+        console.log(response);
+        return res.status(200).json({message:"Post Delete Successfully"});
+    } catch (error) {
+        return res.status(400).json({message:"Unable To Delete Post"});
+    }
+}
 
 
 module.exports = {
@@ -129,4 +142,5 @@ module.exports = {
     postArticle: postArticle,
     getSingleArticle:getSingleArticle, 
     postComment:postComment,
+    deletePost:deletePost,
 };

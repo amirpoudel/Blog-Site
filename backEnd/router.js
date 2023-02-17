@@ -23,6 +23,7 @@ router.post("/admin/login",authController.login);
 router.get("/admin",authController.verifyToken,adminController.getAdmin);
 router.get("/admin/allUsers",authController.verifyToken,adminController.getAllUsers);
 router.get("/admin/totalPosts",authController.verifyToken,adminController.getTotalPosts);
+router.get("/admin/totalVisits",authController.verifyToken,adminController.getTotalVisits);
 
 
 
@@ -36,7 +37,8 @@ router.post("/logout",authController.logout)
 router.post("/user/post-article",authController.verifyToken,upload.single('image'),userController.postArticle);
 //request for comment on post
 router.post("/post/comment/:articleId",authController.verifyToken,userController.postComment);
-
+//request for delete post
+router.delete("/post/:postId",authController.verifyToken,userController.deletePost)
 
 //request for single article from home page with out login
 router.get("/article/:articleId",globalController.getSingleArticle);

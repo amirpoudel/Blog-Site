@@ -2,3 +2,6 @@
     max-height: 60vh;
     width: 150vh;
 }
+.btn-delete{
+    background-color: red;
+}
