@@ -59,7 +59,7 @@ const postArticle = async (req,res)=>{
         imagePath = null;
     }
     
-    //const imageBinaryData = fs.readFileSync(imagePath);
+    
     data.imagePath = imagePath
     console.log(data.imagePath);
 
@@ -134,6 +134,38 @@ const deletePost = async(req,res)=>{
     }
 }
 
+const updateProfilePic = async(req,res)=>{
+
+
+    //update user profile picture 
+
+     //getting image from uploads/image/userProfilePic folder
+     let imagePath ;
+     let userId = req.id;
+     if(req.file){
+         imagePath = req.file.path;
+         console.log('This is image path bro',imagePath);
+         try {
+            const response = await database.updateProfilePic(userId,imagePath);
+            console.log(response);
+            return res.status(200).json({message:"Image Update Success"})
+         } catch (error) {
+            return res.status(400).json({message:"Unable To Update Profile Pic"})
+         }
+         
+
+
+     }else{
+        return res.status(400).json({message:"Please Select Image"});
+     }
+
+
+
+
+     
+
+}
+
 
 module.exports = {
 
@@ -143,4 +175,5 @@ module.exports = {
     getSingleArticle:getSingleArticle, 
     postComment:postComment,
     deletePost:deletePost,
+    updateProfilePic:updateProfilePic,
 };

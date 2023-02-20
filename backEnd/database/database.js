@@ -163,6 +163,16 @@ async function deletePost(postId){
     }
 }
 
+async function updateProfilePic(userId,imagePath){
+    try {
+        const res = await model.User.findByIdAndUpdate(userId,{ profileImagePath:imagePath});
+        console.log(res);
+        return res;
+    } catch (error) {
+        return new Error(error);
+    }
+}
+
 
 
 //----------------------Global Controller------------------------------
@@ -262,6 +272,7 @@ module.exports = {
     getSingleArticle:getSingleArticle,
     updateViews:updateViews,
     deletePost:deletePost,
+    updateProfilePic:updateProfilePic,
 
     //admin related function
     createAdmin:createAdmin,

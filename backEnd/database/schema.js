@@ -38,6 +38,9 @@ const userSchema = new Schema({
         
     },
     posts:[{type:Schema.Types.ObjectId,ref:'Post'}],
+    profileImagePath:{
+        type:String
+    }
    
 
 },{timestamps:true})
@@ -151,6 +154,11 @@ const visitorsSchema= new Schema({
     latitude:String,
     longitude:String,
     org:String,
+    date:{
+        type:Date,
+        default:Date.now,
+    },
+
 })
 
 

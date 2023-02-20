@@ -4,16 +4,14 @@
 const database = require("../database/database");
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-const fs = require('fs');
+
 const validator = require("email-validator");
 const jwt = require('jsonwebtoken');
-const multer = require('multer');
-const {GridFsStorage} = require('multer-gridfs-storage')
-const { use, head, post } = require('../router');
-const { reset } = require('nodemon');
+
 require('dotenv').config();
 
-const date = new Date();
+
+
 
 const tokenExpireTime = '1hr';
 

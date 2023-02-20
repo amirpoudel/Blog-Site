@@ -4,7 +4,7 @@ const { verifyToken } = require('./controller/userController');
 const userController = require('./controller/userController');
 const globalController = require('./controller/globalController')
 const router = express.Router();
-const {upload} = require('./controller/fileController');// multer storage....
+const {upload,profilePic} = require('./controller/fileController');// multer storage....
 const adminController = require('./controller/adminController');
 const authController = require('./controller/authController');
 //home page
@@ -33,16 +33,22 @@ router.post("/register",authController.registration);
 router.get("/user",authController.verifyToken,userController.getUser);
 router.get("/refreshToken",authController.refreshToken,authController.verifyToken,userController.getUser)
 router.post("/logout",authController.logout)
-//request for create post
-router.post("/user/post-article",authController.verifyToken,upload.single('image'),userController.postArticle);
-//request for comment on post
-router.post("/post/comment/:articleId",authController.verifyToken,userController.postComment);
-//request for delete post
-router.delete("/post/:postId",authController.verifyToken,userController.deletePost)
+
+router.post("/user/post-article",authController.verifyToken,upload.single('image'),userController.postArticle);//request for create post
+
+router.post("/post/comment/:articleId",authController.verifyToken,userController.postComment);//request for comment on post
+
+router.delete("/post/:postId",authController.verifyToken,userController.deletePost)//request for delete post
+//request for single article from user page after user login -
+router.get("/user/article/:articleId",authController.verifyToken,userController.getSingleArticle);
+
+router.put("/user/updateProfilePic",authController.verifyToken,profilePic.single('profileImage'),userController.updateProfilePic)//update user profile picture
+
+
+
 
 //request for single article from home page with out login
 router.get("/article/:articleId",globalController.getSingleArticle);
-//request for single article from user page after user login -
-router.get("/user/article/:articleId",authController.verifyToken,userController.getSingleArticle);
+
 
  module.exports = router;
