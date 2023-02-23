@@ -258,6 +258,17 @@ async function visitors(info){
 }
 
 
+async function changeVisitors(){
+    try {
+        // model.Visitor.watch().on('change',(data)=>{
+        //     console.log(data);
+        // })
+    } catch (error) {
+        
+    }
+}
+
+
 module.exports = {
     connect : connect,
 
@@ -288,5 +299,9 @@ module.exports = {
 
     //global controller
     visitors:visitors,
+
+
+    //watch stream
+    changeVisitors:changeVisitors,
 
 }

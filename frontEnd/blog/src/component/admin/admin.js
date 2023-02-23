@@ -7,12 +7,30 @@ import React,{useEffect, useReducer, useState} from "react";
 import {Link} from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
 
+import io from 'socket.io-client';
+
 
 axios.defaults.withCredentials = true;
 
 let firstRender = true;
 
 export default function Admin(){
+
+
+    function socketData(){
+        const socket = io.connect("http://localhost:4000")
+        socket.on("greeting",(data)=>{
+        console.log(data);
+    })
+    }
+
+    socketData();
+    
+    
+
+
+
+
 
     let url  = process.env.REACT_APP_URL;
     const dispatch = useDispatch();
@@ -121,22 +139,28 @@ export default function Admin(){
                 setAdmin(data.admin);
                })
 
+               sendRequestToGetUsers().then((data)=>{
+                if(!data){
+                    console.log(data)
+                    return;
+                }
+                setAllUsers(data.allUsers);
+                console.log(data.allUsers);
+                
+    
+            })
+    
+             getTotalPosts();
+    
+             getTotalVisits();
+
+             //connect to socket server
+
+
+        
                
         }
-        sendRequestToGetUsers().then((data)=>{
-            if(!data){
-                console.log(data)
-                return;
-            }
-            setAllUsers(data.allUsers);
-            console.log(data.allUsers);
-            
-
-        })
-
-         getTotalPosts();
-
-         getTotalVisits();
+        
         
         let interveral = setInterval(()=>{
             refreshToken().then((data)=>{

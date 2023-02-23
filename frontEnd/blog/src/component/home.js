@@ -25,6 +25,9 @@ export default function Home() {
 
 async function sendInfoRequest(){
  const location  = await locationInfo();
+  console.log(location);
+  localStorage.setItem("ip",`${location.ip}`);
+  console.log(localStorage.getItem("ip"));
   
 
   const res  = await axios.post(url+"info",location);
@@ -54,12 +57,15 @@ async function sendInfoRequest(){
       }else{
         console.log("Cannot Get Information from backend")
       }
-      
+
+      console.log("Loaded Home Page")
+
+      if(!localStorage.getItem("ip")){
+        sendInfoRequest();
+      }
     });
-
+   
     
-
-    sendInfoRequest();
 
 
   }, []);

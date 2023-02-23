@@ -1,13 +1,34 @@
 const database = require('../database/database');
 
+const express = require("express");
+const { createServer } = require("http");
+const { Server } = require("socket.io");
 
+const app = express();
+const httpServer = createServer(app);
 
-
-
-
+httpServer.listen(4000);
+const io = new Server(httpServer, { cors:{
+    origin:"*"
+} });
 require('dotenv').config();
 
 
+
+
+function socketConnection(){
+    
+       io.on("connection",(socket)=>{
+        console.log("Conncectd & socket id is",socket.id);
+
+        socket.emit("greeting","Hello Admin From Server");
+
+        database.changeVisitors();
+
+
+       })
+
+}
 
 
 const getAdmin = async (req,res)=>{
@@ -15,6 +36,8 @@ const getAdmin = async (req,res)=>{
     console.log("Getting All the information Related Admin",adminId);
     try {
         let admin = await database.findAdminById(adminId);
+        //established socket 
+        socketConnection();
         return res.status(200).json({admin});
     } catch (error) {
         return res.status(400).json({message:"please try again ! "});
