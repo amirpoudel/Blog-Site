@@ -8,6 +8,8 @@ const saltRounds = 10;
 const validator = require("email-validator");
 const jwt = require('jsonwebtoken');
 
+const sendMail = require('../controller/sendEmail');
+
 require('dotenv').config();
 
 
@@ -61,7 +63,7 @@ const registration = async (req, res) => {
 }
 
 const login = async (req, res) => {
-    console.log("data recieved for login");
+    
     console.log(req.url);
     console.log(typeof req.url)
     
@@ -128,6 +130,53 @@ const login = async (req, res) => {
     return res.status(200).json({message:'Successfully Logged In',token});
 
 }
+
+function randomTokenGenerator(){
+
+    //return 4 digits random number
+    let min = 1111;
+    let max = 9999;
+    return Math.floor(Math.random() * (max - min) + min);
+
+
+}
+
+let tokenValue ;
+
+const forgetPassword = async (req,res)=>{
+
+    console.log("data recieved for Forget Password");
+    const email  =  req.body.email;
+    console.log(email);
+    let databaseResponse;
+    if(req.url=='/forgetPassword'){
+      databaseResponse = await database.findUserByEmail(email);
+      console.log(databaseResponse)
+      
+      
+    }
+    if(req.url=='/admin/forgetPassword'){
+        //databaseResponse = await database.createAdmin(name,email,hashPassword);
+    }
+    // if user not found 
+    if(!databaseResponse){
+        return res.status(400).json({message:"User Not Found"});
+    }
+    console.log("User Is Present")
+    //after user found - send token on email 
+     tokenValue = randomTokenGenerator();
+     console.log(tokenValue)
+     sendMail.sendTokenMail(email,tokenValue);
+
+
+    return res.status(200).json({message:"User Found"});
+
+
+    
+
+
+}
+
 
 
 const verifyToken = (req, res, next) => {
@@ -229,6 +278,7 @@ const logout = async (req,res)=>{
 module.exports={
     registration:registration,
     login:login,
+    forgetPassword:forgetPassword,
     verifyToken:verifyToken,
     refreshToken:refreshToken,
     logout:logout,

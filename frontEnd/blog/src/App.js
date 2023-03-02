@@ -8,7 +8,7 @@ import User from './component/user/user.js';
 import SingleArticle from './component/singleArticle';
 import SingleArticleForUser from './component/user/post/singleArticleView';
 import Admin from './component/admin/admin';
-
+import ForgetPassword from './component/auth/forgetPassword';
 
 function App() {
   const {isLoggedIn} = useSelector(state=>state.authentication)
@@ -19,6 +19,7 @@ function App() {
     <Routes>
       <Route path='/' element={<Home/>}/>
         <Route path="/login" element={<Login access = 'user'/>} />
+        <Route path='/forgetPassword' element={<ForgetPassword access='user'/>} />
         <Route path="/register" element={<Register access='user'/>}/>
         <Route path="/user" element={<User/>}/>
         <Route path="/article/:id" element={<SingleArticle/>}/>

@@ -15,16 +15,16 @@ require('dotenv').config();
 
 
 
-
+//this function is under construction
 function socketConnection(){
     
        io.on("connection",(socket)=>{
         console.log("Conncectd & socket id is",socket.id);
 
-        socket.emit("greeting","Hello Admin From Server");
+        socket.broadcast.emit("greeting","Hello Admin From Server");
 
-        database.changeVisitors();
-
+       database.changeVisitors()
+        //console.log("Change Stream",changeStreams)
 
        })
 
@@ -37,7 +37,7 @@ const getAdmin = async (req,res)=>{
     try {
         let admin = await database.findAdminById(adminId);
         //established socket 
-        socketConnection();
+        //socketConnection();
         return res.status(200).json({admin});
     } catch (error) {
         return res.status(400).json({message:"please try again ! "});
