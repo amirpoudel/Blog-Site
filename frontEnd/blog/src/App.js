@@ -9,6 +9,8 @@ import SingleArticle from './component/singleArticle';
 import SingleArticleForUser from './component/user/post/singleArticleView';
 import Admin from './component/admin/admin';
 import ForgetPassword from './component/auth/forgetPassword';
+import VerifyToken from './component/auth/verifyToken';
+import ResetPassword from './component/auth/resetPassword';
 
 function App() {
   const {isLoggedIn} = useSelector(state=>state.authentication)
@@ -20,6 +22,8 @@ function App() {
       <Route path='/' element={<Home/>}/>
         <Route path="/login" element={<Login access = 'user'/>} />
         <Route path='/forgetPassword' element={<ForgetPassword access='user'/>} />
+        <Route path='/verifyToken' element={<VerifyToken access='user'/> }/>
+        <Route path='/resetPassword' element={<ResetPassword access='user'/>}/>
         <Route path="/register" element={<Register access='user'/>}/>
         <Route path="/user" element={<User/>}/>
         <Route path="/article/:id" element={<SingleArticle/>}/>

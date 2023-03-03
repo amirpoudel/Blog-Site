@@ -45,6 +45,15 @@ const userSchema = new Schema({
 
 },{timestamps:true})
 
+// ------ Schema For insert token value for password reset - temporary store
+const tokenSchema = new Schema({
+    email:{
+        type:String,
+        require:true,
+    },
+    token:Number,
+})
+
 //Post Schema 
 
 const postSchema = new Schema({
@@ -171,5 +180,5 @@ module.exports = {
     commentSchema:commentSchema,
     replyCommentSchema:replyCommentSchema,
     visitorsSchema:visitorsSchema,
-
+    tokenSchema:tokenSchema,
 }

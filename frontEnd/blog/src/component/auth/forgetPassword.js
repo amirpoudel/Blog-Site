@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-
+import { useNavigate } from "react-router-dom"
 let isUserPresent=false;
 
 export default function ForgetPassword(props) {
@@ -19,18 +19,25 @@ export default function ForgetPassword(props) {
     const [email,setEmail] = useState("");
 
     //send email to backend
+    const navigate = useNavigate();
 
     async function sendEmailRequest(){
         try {
             console.log(email);
+            //before sending request store email in local storage 
+            localStorage.setItem("email",email)//when send token request email needeed
             const res  = await axios.post(url,{email:email});
             console.log("Response",res.status);
             if(res.status==200){
                 isUserPresent = true;
+                navigate('/verifyToken')
                 
             }
         } catch (error) {
-            console.log("Error" , error.response.data.message);
+            console.log("Error" , error.response.data);
+            if(error.response.status==400){
+              alert("User Not Found!!!");
+            }
         }
        
        

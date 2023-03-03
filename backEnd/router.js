@@ -30,6 +30,8 @@ router.get("/admin/totalVisits",authController.verifyToken,adminController.getTo
 //Handle request From User Site
 router.post("/login",authController.login)
 router.post("/forgetPassword",authController.forgetPassword);
+router.post("/forgetPassword/verifyToken",authController.verifyPasswordResetToken);
+router.post("/resetPassword",authController.verifyToken,authController.resetPassword)
 router.post("/register",authController.registration);
 router.get("/user",authController.verifyToken,userController.getUser);
 router.get("/refreshToken",authController.refreshToken,authController.verifyToken,userController.getUser)

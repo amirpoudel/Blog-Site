@@ -166,6 +166,51 @@ async function updateProfilePic(userId, imagePath) {
   }
 }
 
+//store token value temp - 
+
+async function storeTokenValue(email,tokenValue){
+  try {
+    const response = await model.Token.create({
+      email:email,
+      token:tokenValue
+    })
+    console.log(response);
+    return response;
+  } catch (error) {
+    
+  }
+}
+
+async function deleteTokenValue(email){
+  try {
+    const res = await model.Token.findOneAndDelete({email:email});
+    console.log(res);
+    return res;
+  } catch (error) {
+    
+  }
+}
+async function getTokenValue(email){
+  try {
+    const res = await model.Token.findOne({email:email});
+    return res;
+  } catch (error) {
+    
+  }
+}
+
+async function resetUserPassword(email,newPassword){
+  try {
+    
+    const res = await model.User.findOneAndUpdate({email:email},{password:newPassword})
+   console.log(res);
+    return res;
+  } catch (error) {
+    
+  }
+}
+
+
 //----------------------Global Controller------------------------------
 
 //get all articles
@@ -268,7 +313,10 @@ module.exports = {
   updateViews: updateViews,
   deletePost: deletePost,
   updateProfilePic: updateProfilePic,
-
+  storeTokenValue:storeTokenValue,
+  deleteTokenValue:deleteTokenValue,
+  getTokenValue:getTokenValue,
+  resetUserPassword:resetUserPassword,
   //admin related function
   createAdmin: createAdmin,
   findAdminByEmail: findAdminByEmail,
