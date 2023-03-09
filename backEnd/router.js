@@ -14,6 +14,7 @@ const authController = require('./controller/authController');
 
 router.get("/",globalController.getArticles)
 router.post("/info",globalController.info);
+router.post("/search",globalController.searchArticles);
 
 
 //Handle Request From Admin
@@ -24,7 +25,9 @@ router.get("/admin",authController.verifyToken,adminController.getAdmin);
 router.get("/admin/allUsers",authController.verifyToken,adminController.getAllUsers);
 router.get("/admin/totalPosts",authController.verifyToken,adminController.getTotalPosts);
 router.get("/admin/totalVisits",authController.verifyToken,adminController.getTotalVisits);
-
+router.post("/admin/forgetPassword",authController.forgetPassword);
+router.post("/admin/forgetPassword/verifyToken",authController.verifyPasswordResetToken);
+router.post("/admin/resetPassword",authController.verifyToken,authController.resetPassword)
 
 
 //Handle request From User Site

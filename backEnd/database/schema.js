@@ -99,6 +99,8 @@ const postSchema = new Schema({
 
 
 },{timestamps:true})
+//creating indexes for post schema 
+postSchema.index({title:'text'});
 
 //comment Schema associated to post
 

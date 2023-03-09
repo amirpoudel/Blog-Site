@@ -32,6 +32,9 @@ function App() {
         <Route path='/admin' element={<Admin/>}/>
         <Route path='/admin/register' element={<Register access='admin'/>}/>
         <Route path='/admin/login' element={<Login access='admin'/>}/>
+        <Route path='/admin/forgetPassword' element={<ForgetPassword access='admin'/>} />
+        <Route path='/admin/verifyToken' element={<VerifyToken access='admin'/> }/>
+        <Route path='/admin/resetPassword' element={<ResetPassword access='admin'/>}/>
     </Routes>
 </BrowserRouter>
 </>

@@ -166,7 +166,9 @@ async function updateProfilePic(userId, imagePath) {
   }
 }
 
+//------------------Database function for forget password---------
 //store token value temp - 
+
 
 async function storeTokenValue(email,tokenValue){
   try {
@@ -201,8 +203,20 @@ async function getTokenValue(email){
 
 async function resetUserPassword(email,newPassword){
   try {
-    
+    console.log("Triggering password reset function ");
     const res = await model.User.findOneAndUpdate({email:email},{password:newPassword})
+   console.log(res);
+    return res;
+  } catch (error) {
+    
+  }
+}
+
+
+async function resetAdminPassword(email,newPassword){
+  try {
+    console.log("Triggering password reset function ");
+    const res = await model.Admin.findOneAndUpdate({email:email},{password:newPassword})
    console.log(res);
     return res;
   } catch (error) {
@@ -299,6 +313,21 @@ async function changeVisitors() {
   }
 }
 
+//search articles function 
+async function searchArticles(searchWord){
+
+  try {
+    //Model.find({ $text: { $search: 'some text' } });
+    //search and sort using textScore;
+    const articles = await model.Post.find({$text:{$search:searchWord}},{score:{$meta:"textScore"}}).sort({score:{$meta:"textScore"}});
+    console.log(articles);
+    return articles;
+  } catch (error) {
+    
+  }
+}
+
+
 module.exports = {
   connect: connect,
 
@@ -322,6 +351,7 @@ module.exports = {
   findAdminByEmail: findAdminByEmail,
   findAdminById: findAdminById, //not returning password
   findAllUsers: findAllUsers,
+  resetAdminPassword:resetAdminPassword,
 
   //counting related function,
   totalVisits: totalVisits,
@@ -329,6 +359,8 @@ module.exports = {
 
   //global controller
   visitors: visitors,
+  searchArticles:searchArticles,
+  
 
   //watch stream
   changeVisitors: changeVisitors,

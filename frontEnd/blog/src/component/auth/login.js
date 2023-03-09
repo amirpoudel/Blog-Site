@@ -11,11 +11,13 @@ export default function Login(props) {
   const dispatch = useDispatch();
   console.log(props);
   let url = process.env.REACT_APP_URL;
+  let forgetPasswordUrl = '/forgetPassword';
   if(props.access=='user'){
     url = process.env.REACT_APP_URL+"login";
   }
   if(props.access=='admin'){
     url = process.env.REACT_APP_URL+"admin/login";
+    forgetPasswordUrl = '../admin/forgetPassword'
   }
   console.log(url);
   console.log(`${process.env.REACT_APP_URL}`)
@@ -27,6 +29,8 @@ export default function Login(props) {
     password: "",
   });
 
+
+  
 
 
   const navigate = useNavigate();
@@ -100,7 +104,8 @@ export default function Login(props) {
               onChange={onChangeHandle}
             />
           </div>
-          <Link to='../forgetPassword'>Forget Password ?</Link>
+          
+          <Link to={forgetPasswordUrl}>Forget Password ?</Link>
           <button type="submit" className="btn" onClick={submitHandle}>
             Login
           </button>

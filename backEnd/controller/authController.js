@@ -136,7 +136,7 @@ const forgetPassword = async (req, res) => {
     console.log(databaseResponse);
   }
   if (req.url == "/admin/forgetPassword") {
-    //databaseResponse = await database.createAdmin(name,email,hashPassword);
+    databaseResponse = await database.findAdminByEmail(email);
   }
   // if user not found
   if (!databaseResponse) {
@@ -245,13 +245,16 @@ const resetPassword = async(req,res)=>{
     let databaseResponse;
     console.log(req.url);
     
-      if (req.url == "/register") {
+      if (req.url == "/resetPassword") {
         databaseResponse = await database.resetUserPassword( email, hashPassword);
       }
-    //   if (req.url == "/admin/register") {
-    //     databaseResponse = await database.createAdmin(name, email, hashPassword);
-    //   }
+      if (req.url == "/admin/resetPassword") {
+       databaseResponse = await database.resetAdminPassword( email, hashPassword);
+      }
     
+    //after reset password delete token 
+    database.deleteTokenValue(email);
+
       console.log(databaseResponse);
      
       console.log(hashPassword);

@@ -8,11 +8,13 @@ export default function ForgetPassword(props) {
 
     console.log(props);
   let url = process.env.REACT_APP_URL;
+  let verifyTokenUrl = '/verifyToken';
   if(props.access=='user'){
     url = process.env.REACT_APP_URL+"forgetPassword";
   }
   if(props.access=='admin'){
-    url = process.env.REACT_APP_URL+"admin/login";
+    url = process.env.REACT_APP_URL+"admin/forgetPassword";
+    verifyTokenUrl = '/admin/verifyToken'
   }
   console.log(url);
 
@@ -30,7 +32,7 @@ export default function ForgetPassword(props) {
             console.log("Response",res.status);
             if(res.status==200){
                 isUserPresent = true;
-                navigate('/verifyToken')
+                navigate(verifyTokenUrl)
                 
             }
         } catch (error) {

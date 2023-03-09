@@ -5,6 +5,7 @@ import { useState } from "react"
 export default function ResetPassword(props){
 
 
+
     let url = process.env.REACT_APP_URL;
   if (props.access == "user") {
     url = process.env.REACT_APP_URL + "resetPassword";
@@ -26,6 +27,7 @@ export default function ResetPassword(props){
             console.log(res);
             if(res.status==200){
                 alert("Password reset successfull");
+               
             }
             
         } catch (error) {

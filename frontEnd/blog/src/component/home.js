@@ -6,10 +6,11 @@ import ShowArticles from "./showArticles";
 
 export default function Home() {
   const [articles, setArticles] = useState([]);
-  const [info,setInfo] = useState({});//store all user infromation
+  const [info, setInfo] = useState({}); //store all user infromation
+  const [searchWord, setSearchWord] = useState(""); // search word
 
-  let url = "http://localhost:5000/"
-//Sending Request To Backend
+  let url = "http://localhost:5000/";
+  //Sending Request To Backend
   async function sendRequest() {
     const res = await axios.get("http://localhost:5000/").catch((err) => {
       console.log(err);
@@ -21,58 +22,68 @@ export default function Home() {
     return data;
   }
 
-//send info to backend
+  //send info to backend
 
-async function sendInfoRequest(){
- const location  = await locationInfo();
-  console.log(location);
-  localStorage.setItem("ip",`${location.ip}`);
-  console.log(localStorage.getItem("ip"));
-  
+  async function sendInfoRequest() {
+    const location = await locationInfo();
+    console.log(location);
+    localStorage.setItem("ip", `${location.ip}`);
+    console.log(localStorage.getItem("ip"));
 
-  const res  = await axios.post(url+"info",location);
-  console.log(res);
-
-}
+    const res = await axios.post(url + "info", location);
+    console.log(res);
+  }
 
   // request for get user location related infromation
-  async function locationInfo(){
-    const res = await axios.get("https://ipapi.co/json",{withCredentials: false});
-    if(!res.data){
+  async function locationInfo() {
+    const res = await axios.get("https://ipapi.co/json", {
+      withCredentials: false,
+    });
+    if (!res.data) {
       return null;
     }
-  
+
     return res.data;
   }
 
-   
+  //handle on change for search box
+  const handleSearch = (event) => {
+    setSearchWord(event.target.value);
+    console.log(event.target.value);
+  };
+  //send search request
+  async function sendSearchRequest(){
+    let searchUrl = url+"search";
+
+    const response = await axios.post(searchUrl,{data:searchWord});
+    console.log(response.data)
+  }
+  //button submit handle
+  const searchSubmitHandle = ()=>{
+    sendSearchRequest();
+  }
 
   useEffect(() => {
     sendRequest().then((data) => {
-      if(data!=null){
+      if (data != null) {
         console.log(data.articles[0].author);
-      console.log(data.articles);
-      
-      setArticles(data.articles);
-      }else{
-        console.log("Cannot Get Information from backend")
+        console.log(data.articles);
+
+        setArticles(data.articles);
+      } else {
+        console.log("Cannot Get Information from backend");
       }
 
-      console.log("Loaded Home Page")
+      console.log("Loaded Home Page");
 
-      if(!localStorage.getItem("ip")){
+      if (!localStorage.getItem("ip")) {
         sendInfoRequest();
       }
     });
-   
-    
-
-
   }, []);
 
   return (
     <>
-
       <div className="button-container">
         <Link to="/login">
           <button className="primary-button">Login</button>
@@ -82,10 +93,17 @@ async function sendInfoRequest(){
         </Link>
       </div>
 
-      
+      <div className="form-group">
+        <label htmlFor="articleSearch"></label>
+        <input type="text" id="articleSearch" name="articleSearch"  onChange={handleSearch}/>
+        <button type="button" class="btn btn-info" onClick={searchSubmitHandle}>
+          Search
+        </button>
+      </div>
+
       <div className="container">
         <h1>Blogs</h1>
-        <ShowArticles articles={articles} url = {url}/>
+        <ShowArticles articles={articles} url={url} />
       </div>
     </>
   );

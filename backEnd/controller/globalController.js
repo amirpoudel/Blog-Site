@@ -53,8 +53,32 @@ const info  = async(req,res)=>{
     await database.visitors(req.body);
 }
 
+const searchArticles = async(req,res)=>{
+    console.log("The data is comming for search",req.body);
+    const searchWord = req.body.data;
+    try {
+        const articles = await database.searchArticles(searchWord);
+       if(Object.keys(articles).length==0){
+        console.log("No Matching Found");
+        return res.status(404).json({message:"No Matching Found"}) ;
+       }else{
+        console.log("Matching Found",articles);
+        return res.status(200).json({articles});
+       }
+
+    } catch (error) {
+        return res.status(500).json({message:"Database Error"});
+    }
+   
+
+
+
+
+}
+
 module.exports={
     getArticles:getArticles,
     getSingleArticle:getSingleArticle,
     info:info,
+    searchArticles:searchArticles,
 }

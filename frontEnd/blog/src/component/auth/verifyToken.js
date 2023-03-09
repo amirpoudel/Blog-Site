@@ -4,11 +4,13 @@ import { useNavigate } from "react-router-dom";
 
 export default function VerifyToken(props) {
   let url = process.env.REACT_APP_URL;
+  let resetPasswordUrl = '/resetPassword';
   if (props.access == "user") {
     url = process.env.REACT_APP_URL + "forgetPassword/verifyToken";
   }
   if (props.access == "admin") {
     url = process.env.REACT_APP_URL + "admin/forgetPassword/verifyToken";
+    resetPasswordUrl = '/admin/resetPassword';
   }
 
   const [token, setToken] = useState("");
@@ -22,7 +24,7 @@ export default function VerifyToken(props) {
       const response = await axios.post(url,{token:token,email:localStorage.getItem('email')});;//get email from local storage
       console.log(response);
       if(response.status==200){
-        navigate("/resetPassword")
+        navigate(resetPasswordUrl)
       }
     } catch (error) {
       console.log(error);
