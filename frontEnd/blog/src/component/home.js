@@ -8,6 +8,7 @@ export default function Home() {
   const [articles, setArticles] = useState([]);
   const [info, setInfo] = useState({}); //store all user infromation
   const [searchWord, setSearchWord] = useState(""); // search word
+  const [searchResult, setSearchResult] = useState([]); //store all search result;
 
   let url = "http://localhost:5000/";
   //Sending Request To Backend
@@ -52,16 +53,23 @@ export default function Home() {
     console.log(event.target.value);
   };
   //send search request
-  async function sendSearchRequest(){
-    let searchUrl = url+"search";
-
-    const response = await axios.post(searchUrl,{data:searchWord});
-    console.log(response.data)
+  async function sendSearchRequest() {
+    let searchUrl = url + "search";
+    try {
+      const response = await axios.post(searchUrl, { data: searchWord });
+      console.log(response.data.articles);
+      if (response.status == 200) {
+        setSearchResult(response.data.articles);
+      }
+    } catch (error) {
+      console.log(error.response.data.message)
+      setSearchResult([])
+    }
   }
   //button submit handle
-  const searchSubmitHandle = ()=>{
+  const searchSubmitHandle = () => {
     sendSearchRequest();
-  }
+  };
 
   useEffect(() => {
     sendRequest().then((data) => {
@@ -95,11 +103,18 @@ export default function Home() {
 
       <div className="form-group">
         <label htmlFor="articleSearch"></label>
-        <input type="text" id="articleSearch" name="articleSearch"  onChange={handleSearch}/>
+        <input
+          type="text"
+          id="articleSearch"
+          name="articleSearch"
+          onChange={handleSearch}
+        />
         <button type="button" class="btn btn-info" onClick={searchSubmitHandle}>
           Search
         </button>
       </div>
+
+      {searchResult && <ShowArticles articles={searchResult} url={url} />}
 
       <div className="container">
         <h1>Blogs</h1>
