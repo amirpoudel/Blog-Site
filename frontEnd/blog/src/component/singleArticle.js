@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./singleArticle.css";
 import ShowComment from "./showComment";
-
+import {FacebookShareButton,TwitterShareButton,WhatsappShareButton,LinkedinShareButton, FacebookIcon, TwitterIcon, LineIcon, WhatsappIcon, LinkedinIcon} from "react-share";
 
 export default function SingleArticle(props) {
 
@@ -18,6 +18,9 @@ export default function SingleArticle(props) {
 
   let url = "http://localhost:5000/";
 
+  // const shareUrl = url + "article/" + id;
+   const shareUrl = 'https://www.hamrokhelkud.com/cricket/128625.html'
+  
   async function sendRequest() {
     let articleUrl = url + "article/" + id;
     let res = await axios.get(articleUrl).catch((err) => {
@@ -115,6 +118,23 @@ export default function SingleArticle(props) {
             </button>
           </div>
         )}
+
+        {article && <div>
+          <h4>Social Share</h4>
+          <FacebookShareButton url={shareUrl}>
+            <FacebookIcon size={40}/>
+          </FacebookShareButton>
+          <TwitterShareButton url={shareUrl}>
+            <TwitterIcon size={40}/>
+          </TwitterShareButton>
+          <LinkedinShareButton url={shareUrl}>
+            <LinkedinIcon size={40}/>
+          </LinkedinShareButton>
+          
+          <WhatsappShareButton url={shareUrl}>
+            <WhatsappIcon size={40}/>
+          </WhatsappShareButton>
+          </div>}
         
         {article && 
           <div>

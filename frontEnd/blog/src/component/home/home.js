@@ -2,13 +2,14 @@ import "./home.css";
 import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import ShowArticles from "./showArticles";
+import ShowArticles from "../showArticles";
 
 export default function Home() {
   const [articles, setArticles] = useState([]);
   const [info, setInfo] = useState({}); //store all user infromation
   const [searchWord, setSearchWord] = useState(""); // search word
   const [searchResult, setSearchResult] = useState([]); //store all search result;
+  const [subscribeEmail,setSubscribeEmail]= useState("");//sotre email for subscribe newsletter
 
   let url = "http://localhost:5000/";
   //Sending Request To Backend
@@ -71,6 +72,30 @@ export default function Home() {
     sendSearchRequest();
   };
 
+
+
+    //handling subscribe option
+    const handleSubscribeEmail = (event)=>{
+      setSubscribeEmail(event.target.value);
+      console.log(subscribeEmail);
+    }
+    //send subscribe request
+    async function sendSubscribeRequest(){
+      let subscribeURL = url+"subscribe";
+      try {
+        const response = await axios.post(subscribeURL,{data:subscribeEmail});
+        console.log(response);
+        alert(response.data.message)
+      } catch (error) {
+        console.log(error.response);
+        alert(error.response.data.message)
+      }
+    }
+    //handle subscribe button
+    const subscribeClickHandle = ()=>{
+      sendSubscribeRequest();
+    }
+
   useEffect(() => {
     sendRequest().then((data) => {
       if (data != null) {
@@ -119,6 +144,20 @@ export default function Home() {
       <div className="container">
         <h1>Blogs</h1>
         <ShowArticles articles={articles} url={url} />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="subscribe">Get Update Of Newest Articles</label>
+        <input
+          type="email"
+          id="subscribe"
+          name="subscribe"
+          value={subscribeEmail}
+          onChange={handleSubscribeEmail}
+        />
+        <button type="button" class="btn btn-info" onClick={subscribeClickHandle}>
+          Subscribe
+        </button>
       </div>
     </>
   );

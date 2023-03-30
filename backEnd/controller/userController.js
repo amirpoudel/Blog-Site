@@ -1,4 +1,5 @@
 const database = require('../database/database');
+const sendEmail = require('./sendEmail');
 
 
 
@@ -66,7 +67,7 @@ const postArticle = async (req,res)=>{
     data.authorId = userId
     const databaseResponse = await database.createPost(data);
     console.log(databaseResponse);
-    if(databaseResponse){
+    if(!databaseResponse){
         console.log("Could Not post data");
         return res.status(500).json({message:"Could not sumbit data please try again !!"});
     }
@@ -75,6 +76,11 @@ const postArticle = async (req,res)=>{
     let postId = 100;
     //await database.update_user_postId(userId,postId);
     console.log("Post Sumbit Sucessfully");
+    //after post submit succesfull- send to link to subscriber
+    // let subscribersEmail = await database.getAllNewsLetterEmail();
+    // console.log(subscribersEmail);
+    // sendEmail.sendNewsLetterMail(subscribersEmail,databaseResponse);
+
     //after upload image in database delete image from upload file
     
     return res.status(200).json({message:"Post Sumbit Sucessfully"});

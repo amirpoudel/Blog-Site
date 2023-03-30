@@ -16,15 +16,20 @@ let firstRender = true;
 
 export default function Admin(){
 
-
+    //this function call in use effect
     function socketData(){
         const socket = io.connect("http://localhost:4000")
-        socket.on("greeting",(data)=>{
-        console.log(data);
-    })
+      
+        socket.on('message',function(data){
+            console.log(socket.id);
+            console.log("Data from broadcast",data)
+        })
+        socket.on('broadcast',function(data){
+            console.log(`${data} users are connected`);
+        })
     }
 
-    socketData();
+    
     
     
 
@@ -128,6 +133,7 @@ export default function Admin(){
     }
 
     useEffect( ()=>{
+        socketData();
         if(firstRender){
             firstRender = false;
             sendRequest().then((data)=>{

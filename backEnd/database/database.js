@@ -114,8 +114,9 @@ async function createPost(post) {
       { $push: { posts: res._id } }
     ); //find user and update post id
     console.log("Post Save Successfully!!!");
+    return res;
   } catch (err) {
-    return new Error(err);
+    
   }
 }
 
@@ -313,6 +314,25 @@ async function changeVisitors() {
   }
 }
 
+async function watchPostChange(){
+  console.log("Calling function from database file");
+  // broadcastData({user:"Amir Poudel"});
+  try {
+     const changeStream = model.Post.watch();
+     console.log("console change stream");
+     console.log(changeStream);
+     changeStream.on('change',(change)=>{
+      console.log(change);
+      console.log("Detect Change Stream");
+      //broadcastData(change);
+  });
+   
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+  
 //search articles function 
 async function searchArticles(searchWord){
 
@@ -322,6 +342,27 @@ async function searchArticles(searchWord){
     const articles = await model.Post.find({$text:{$search:searchWord}},{score:{$meta:"textScore"}}).sort({score:{$meta:"textScore"}});
     console.log(articles);
     return articles;
+  } catch (error) {
+    
+  }
+}
+
+
+//news letter sign up
+async function newsLetterSignUp(email){
+  try {
+    const res = await model.NewsLetterEmail.create({email:email});
+    return res;
+  } catch (error) {
+    
+  }
+}
+
+//get all news letter email
+async function getAllNewsLetterEmail(){
+  try {
+    const res = await model.NewsLetterEmail.find();
+    return res;
   } catch (error) {
     
   }
@@ -360,8 +401,10 @@ module.exports = {
   //global controller
   visitors: visitors,
   searchArticles:searchArticles,
-  
+  newsLetterSignUp:newsLetterSignUp,
+  getAllNewsLetterEmail:getAllNewsLetterEmail,
 
   //watch stream
   changeVisitors: changeVisitors,
+  watchPostChange:watchPostChange,
 };

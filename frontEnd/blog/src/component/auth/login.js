@@ -55,8 +55,7 @@ export default function Login(props) {
     newCredential[event.target.id] = event.target.value;
     setCredential(newCredential);
 
-    console.log(event.target.value);
-    console.log(event.target.id);
+   
   };
 
 

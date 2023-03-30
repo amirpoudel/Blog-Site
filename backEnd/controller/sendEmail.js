@@ -33,8 +33,44 @@ async function sendTokenMail(email,token){
 }
 
 
+async function sendMailToSubscriber(email,post,link){
+    let mailOption ={
+        from:`${process.env.EMAIL}`,
+        to:`${email}`,
+        subject:`New Post - ${post.title}`,
+        text:`New Article By ${post.author} about ${post.title} , Read Now ->  ${link} `
+    }
+
+    transporter.sendMail(mailOption,function(error,info){
+        if(error){
+            console.log(error);
+        }else{
+            console.log("Email Sent: "+info.response);
+        }
+    })
+}
+
+async function sendNewsLetterMail(subscribersEmail,post){
+    const link = `http://localhost:3000/article/${post._id}`
+
+   
+    subscribersEmail.forEach((subscriberEmail)=>{
+
+        
+        sendMailToSubscriber(subscriberEmail.email,post,link);
+
+    })
+
+
+
+
+    
+}
+
+
 module.exports={
     sendTokenMail:sendTokenMail,
+    sendNewsLetterMail:sendNewsLetterMail,
 
 }
 

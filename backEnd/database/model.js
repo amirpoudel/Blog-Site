@@ -10,7 +10,7 @@ const Comment = mongoose.model('Comment',schema.commentSchema);
 const ReplyComment  = mongoose.model('ReplyComment',schema.replyCommentSchema);
 const Visitor  = mongoose.model('Visitor',schema.visitorsSchema)
 const Token = mongoose.model('Token',schema.tokenSchema);
-
+const NewsLetterEmail = mongoose.model("NewsLetterEmail",schema.newsLetterEmailSchema);
 
 module.exports   = {
     Admin:Admin,
@@ -20,4 +20,5 @@ module.exports   = {
     ReplyComment:ReplyComment,
     Visitor:Visitor,
     Token  : Token,
+    NewsLetterEmail:NewsLetterEmail,
 }

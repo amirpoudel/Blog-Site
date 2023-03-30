@@ -15,6 +15,7 @@ const authController = require('./controller/authController');
 router.get("/",globalController.getArticles)
 router.post("/info",globalController.info);
 router.post("/search",globalController.searchArticles);
+router.post("/subscribe",globalController.newLetterSignUp);
 
 
 //Handle Request From Admin

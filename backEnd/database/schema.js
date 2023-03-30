@@ -172,6 +172,15 @@ const visitorsSchema= new Schema({
 
 })
 
+//news letter sign up schema for store email
+const newsLetterEmailSchema= new Schema({
+    email:{
+        type:String,
+        required:true,
+        unique:true,
+    }
+})
+
 
 module.exports = {
     //export admin'
@@ -183,4 +192,5 @@ module.exports = {
     replyCommentSchema:replyCommentSchema,
     visitorsSchema:visitorsSchema,
     tokenSchema:tokenSchema,
+    newsLetterEmailSchema:newsLetterEmailSchema,
 }

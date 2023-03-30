@@ -3,6 +3,7 @@ const database = require('../database/database');
 const express = require("express");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
+const { Socket } = require('dgram');
 
 const app = express();
 const httpServer = createServer(app);
@@ -15,20 +16,41 @@ require('dotenv').config();
 
 
 
+//data testing 
+
+let article = {
+    author:"Amir Poudel",
+    views:"2M"
+}
+let user = 0;
 //this function is under construction
 function socketConnection(){
     
-       io.on("connection",(socket)=>{
-        console.log("Conncectd & socket id is",socket.id);
+    io.on('connection',(socket)=>{
+        console.log("User Connected");
+        console.log("Socket ID",socket.id);
+        user++;
+        socket.send(article)
+        io.emit("broadcast",{user});
+        console.log(`${user} user are connected`)
+    //    database.watchPostChange(broadcastData);//passing function 
+       
+    //     function broadcastData(data){
+    //         console.log(data);
+    //         console.log("Calling function ");
+    //         socket.send(data);
+    //     }
+        
+  
+     
+        socket.on('disconnect',function(){
+            user--;
+            io.emit("broadcast",{user});
+            console.log("user disconnected");
+            console.log(`${user} user are connected`)
+        })
 
-        socket.broadcast.emit("greeting","Hello Admin From Server");
-
-       database.changeVisitors()
-        //console.log("Change Stream",changeStreams)
-
-       })
-
-}
+    })}
 
 
 const getAdmin = async (req,res)=>{
@@ -37,7 +59,9 @@ const getAdmin = async (req,res)=>{
     try {
         let admin = await database.findAdminById(adminId);
         //established socket 
-        //socketConnection();
+        socketConnection();
+        database.watchPostChange()
+        
         return res.status(200).json({admin});
     } catch (error) {
         return res.status(400).json({message:"please try again ! "});

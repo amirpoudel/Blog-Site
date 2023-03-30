@@ -1,7 +1,8 @@
 import { useSelector } from 'react-redux';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
-import Home from './component/home.js';
+import Navbar from './component/navbar/navbar';
+import Home from './component/home/home.js';
 import Login from './component/auth/login'
 import Register from './component/auth/register.js';
 import User from './component/user/user.js';
@@ -18,8 +19,10 @@ function App() {
   return (
   <>
     <BrowserRouter>
+    <Navbar/>
     <Routes>
-      <Route path='/' element={<Home/>}/>
+
+        <Route path='/' element={<Home/>}/>
         <Route path="/login" element={<Login access = 'user'/>} />
         <Route path='/forgetPassword' element={<ForgetPassword access='user'/>} />
         <Route path='/verifyToken' element={<VerifyToken access='user'/> }/>
@@ -35,6 +38,7 @@ function App() {
         <Route path='/admin/forgetPassword' element={<ForgetPassword access='admin'/>} />
         <Route path='/admin/verifyToken' element={<VerifyToken access='admin'/> }/>
         <Route path='/admin/resetPassword' element={<ResetPassword access='admin'/>}/>
+     
     </Routes>
 </BrowserRouter>
 </>

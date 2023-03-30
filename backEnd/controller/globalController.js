@@ -76,9 +76,32 @@ const searchArticles = async(req,res)=>{
 
 }
 
+//newsletter sign up
+const newLetterSignUp = async(req,res)=>{
+    console.log("The Data is comming for newsletter");
+    console.log(req.body.data);
+    //validation part
+    let email = req.body.data;
+
+    let response  = await database.newsLetterSignUp(email);
+    if(!response){
+        return res.status(400).json({message:"Already Subscribe"});
+    }   
+    return res.status(200).json({message:"Subscribe Successfull"});
+    
+        
+    
+    
+    
+
+}
+
+
+
 module.exports={
     getArticles:getArticles,
     getSingleArticle:getSingleArticle,
     info:info,
     searchArticles:searchArticles,
+    newLetterSignUp:newLetterSignUp,
 }
