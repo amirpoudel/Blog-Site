@@ -2,9 +2,10 @@
 import React, { useState } from "react";
 import axios from 'axios';
 import './register.css'
-import { set } from "mongoose";
+import { Button, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 export default function Register(props) {
-
+    const navigate = useNavigate();
 
     let url = process.env.REACT_APP_URL
 
@@ -81,9 +82,13 @@ export default function Register(props) {
                     <label htmlFor="confirmPassword">Confirm Password</label>
                     <input type="password" id="confirmPassword" name="confirmPassword" value={user.confirmPassword} onChange={onChangeHandle} />
                 </div>
-                <button type="submit" className="btn" onClick={submitHandle}>
-                    Login
-                </button>
+                <Button variant="outlined" onClick={submitHandle}>
+                    Sign Up
+                </Button>
+                <Typography>
+                    Alerady Register? 
+                </Typography>
+                <Button variant="outlined" onClick={()=>navigate('/login')}>Login</Button>
             </div>
         </div>
 

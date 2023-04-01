@@ -1,15 +1,25 @@
 import "./home.css";
-import { Link } from "react-router-dom";
+
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import ShowArticles from "../showArticles";
+import {
+  Box,
+  Container,
+  Grid,
+  Paper,
+  InputBase,
+  IconButton,
+  Typography,
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 
 export default function Home() {
   const [articles, setArticles] = useState([]);
   const [info, setInfo] = useState({}); //store all user infromation
   const [searchWord, setSearchWord] = useState(""); // search word
   const [searchResult, setSearchResult] = useState([]); //store all search result;
-  const [subscribeEmail,setSubscribeEmail]= useState("");//sotre email for subscribe newsletter
+  const [subscribeEmail, setSubscribeEmail] = useState(""); //sotre email for subscribe newsletter
 
   let url = "http://localhost:5000/";
   //Sending Request To Backend
@@ -63,8 +73,8 @@ export default function Home() {
         setSearchResult(response.data.articles);
       }
     } catch (error) {
-      console.log(error.response.data.message)
-      setSearchResult([])
+      console.log(error.response.data.message);
+      setSearchResult([]);
     }
   }
   //button submit handle
@@ -72,29 +82,27 @@ export default function Home() {
     sendSearchRequest();
   };
 
-
-
-    //handling subscribe option
-    const handleSubscribeEmail = (event)=>{
-      setSubscribeEmail(event.target.value);
-      console.log(subscribeEmail);
+  //handling subscribe option
+  const handleSubscribeEmail = (event) => {
+    setSubscribeEmail(event.target.value);
+    console.log(subscribeEmail);
+  };
+  //send subscribe request
+  async function sendSubscribeRequest() {
+    let subscribeURL = url + "subscribe";
+    try {
+      const response = await axios.post(subscribeURL, { data: subscribeEmail });
+      console.log(response);
+      alert(response.data.message);
+    } catch (error) {
+      console.log(error.response);
+      alert(error.response.data.message);
     }
-    //send subscribe request
-    async function sendSubscribeRequest(){
-      let subscribeURL = url+"subscribe";
-      try {
-        const response = await axios.post(subscribeURL,{data:subscribeEmail});
-        console.log(response);
-        alert(response.data.message)
-      } catch (error) {
-        console.log(error.response);
-        alert(error.response.data.message)
-      }
-    }
-    //handle subscribe button
-    const subscribeClickHandle = ()=>{
-      sendSubscribeRequest();
-    }
+  }
+  //handle subscribe button
+  const subscribeClickHandle = () => {
+    sendSubscribeRequest();
+  };
 
   useEffect(() => {
     sendRequest().then((data) => {
@@ -117,14 +125,39 @@ export default function Home() {
 
   return (
     <>
-      <div className="button-container">
-        <Link to="/login">
-          <button className="primary-button">Login</button>
-        </Link>
-        <Link to="/register">
-          <button className="secondary-button">Register</button>
-        </Link>
-      </div>
+      <Container container>
+        <Paper
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            marginTop: "1rem",
+            width: 300,
+          }}
+        >
+          <InputBase
+            sx={{ ml: 1, flex: 1 }}
+            placeholder="Search Articles"
+            inputProps={{ "aria-label": "search articles" }}
+            id="articleSearch"
+            name="articleSearch"
+            onChange={handleSearch}
+          />
+          <IconButton
+            type="button"
+            sx={{ p: "10px" }}
+            aria-label="search"
+            onClick={searchSubmitHandle}
+          >
+            <SearchIcon />
+          </IconButton>
+        </Paper>
+
+        <Grid mt={20}>
+          
+         {searchResult && <ShowArticles articles={searchResult} url={url} />}
+          {articles && <ShowArticles articles={articles} url={url} />}
+        </Grid>
+      </Container>
 
       <div className="form-group">
         <label htmlFor="articleSearch"></label>
@@ -139,12 +172,7 @@ export default function Home() {
         </button>
       </div>
 
-      {searchResult && <ShowArticles articles={searchResult} url={url} />}
-
-      <div className="container">
-        <h1>Blogs</h1>
-        <ShowArticles articles={articles} url={url} />
-      </div>
+      
 
       <div className="form-group">
         <label htmlFor="subscribe">Get Update Of Newest Articles</label>
@@ -155,7 +183,11 @@ export default function Home() {
           value={subscribeEmail}
           onChange={handleSubscribeEmail}
         />
-        <button type="button" class="btn btn-info" onClick={subscribeClickHandle}>
+        <button
+          type="button"
+          class="btn btn-info"
+          onClick={subscribeClickHandle}
+        >
           Subscribe
         </button>
       </div>

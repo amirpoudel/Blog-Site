@@ -3,6 +3,7 @@ import axios from "axios";
 import "./login.css";
 import { Link, redirect,useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { Button, Typography } from "@mui/material";
 
 
 
@@ -105,9 +106,13 @@ export default function Login(props) {
           </div>
           
           <Link to={forgetPasswordUrl}>Forget Password ?</Link>
-          <button type="submit" className="btn" onClick={submitHandle}>
+          <Button variant="outlined" onClick={submitHandle}>
             Login
-          </button>
+          </Button>
+          <Typography>
+            Are You Register?
+          </Typography>
+          <Button variant="outlined" onClick={()=>navigate('/register')}>Sign Up</Button>
         </div>
       </div>
     </>

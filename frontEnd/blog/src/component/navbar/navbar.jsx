@@ -15,6 +15,7 @@ import {
   Drawer,
   useTheme,
   useMediaQuery,
+  colors,
 } from "@mui/material";
 import { Container, Stack } from "@mui/system";
 import CodeOffIcon from "@mui/icons-material/CodeOff";
@@ -38,13 +39,15 @@ export default function Navbar() {
   
   return (
     <>
-      <AppBar sx={{ bgcolor: "white" }} position="static">
+      <AppBar sx={{bgcolor:"black" }} position="static">
         <Container>
           <Toolbar>
             
             <CodeOffIcon />
             <Typography noWrap={true} sx={{fontSize:'1.4rem',fontFamily:'monospace',textDecoration:'none',color:'inherit',cursor:'pointer'}}  ml={1} variant="inherit" 
-             onClick={()=>{navigate("/")}} >codeArt</Typography>
+             onClick={()=>{
+              SetTabValue(null);//reset tab value
+              navigate("/")}} >codeArt</Typography>
             
             
             {isMatch ? (
@@ -61,28 +64,15 @@ export default function Navbar() {
                   }}
                 >
                   {pages.map((page, index) => {
-                    return <Tab key={index} label={page} />;
+                    return <Tab sx={{color:'white'}} key={index} label={page} />;
                   })}
                 </Tabs>
 
                 <Box sx={{ ml: "auto" }}>
-                  {/* <Button
-                    variant="contained"
-                    onClick={() => {
-                      navigate("/login");
-                    }}
-                  >
-                    Login
-                  </Button>
-                  <Button
-                    variant="contained"
-                    onClick={() => {
-                      navigate("/register");
-                    }}
-                  >
-                    Sign Up
-                  </Button> */}
-                  <Avatar src={avatarImg} />
+                 
+                  <Avatar src={avatarImg} sx={{cursor:'pointer'}} onClick={()=>{
+                    navigate("/login")
+                  }}/>
                 </Box>
               </>
             )}
