@@ -18,8 +18,10 @@ async function createAdmin(name, email, password) {
       password: password,
     });
     await admin.save();
+    return admin;
   } catch (error) {
-    return new Error(error);
+    //return new Error(error);
+    throw new Error(error);
   }
 }
 
@@ -62,8 +64,10 @@ async function createUser(name, email, password) {
     });
     await user.save();
     console.log("data save succesfully");
+    return user;
   } catch (error) {
-    return new Error(error);
+    //return new Error(error);
+    throw new Error(error);
   }
 }
 
@@ -231,7 +235,11 @@ async function resetAdminPassword(email,newPassword){
 //get all articles
 async function getArticles() {
   try {
-    const articles = await model.Post.find({}).populate("comments");
+    const articles = await model.Post.find({}).select({author:1,date:1,imagePath:1,title:1,body:1}).populate({
+      path:'authorId',
+      select:'profileImagePath',
+   
+    });
     return articles;
   } catch (error) {
     return new Error(error);
@@ -243,7 +251,7 @@ async function getArticles() {
 async function getSingleArticle(id) {
   try {
     //find post and update the views
-    const article = await model.Post.findByIdAndUpdate(id).populate("comments");
+    const article = await model.Post.findByIdAndUpdate(id).populate("comments")
 
     return article;
   } catch (error) {

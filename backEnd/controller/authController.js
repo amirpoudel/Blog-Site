@@ -1,5 +1,6 @@
 // authentication and authorization for user and admin
-
+const fs  = require('fs');
+const fsPromises = fs.promises;
 const database = require("../database/database");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
@@ -14,39 +15,62 @@ require("dotenv").config();
 const tokenExpireTime = "1hr";
 
 const registration = async (req, res) => {
-  console.log("Data recieved for Registration");
-  const name = req.body.name;
-  const email = req.body.email;
-  const password = req.body.password;
-  const confirmPassword = req.body.confirmPassword;
+  
+
+  const {name:name,email:email,password:password,confirmPassword:confirmPassword} = req.body
   if (!validator.validate(email)) {
     console.log("Please Enter Valid Email");
     return res.status(403).json({ message: "Please Enter Verified Email" });
   }
   if (password !== confirmPassword) {
-    console.log("Password Incorrect ");
-    return res.status(403).json({ message: "Password Incorrect" });
+    console.log("Password not match  ");
+    return res.status(403).json({ message: "Password  not match" });
   }
 
   const hashPassword = await bcrypt.hash(password, saltRounds);
   let databaseResponse;
   console.log(req.url);
+  try {
 
-  if (req.url == "/register") {
-    databaseResponse = await database.createUser(name, email, hashPassword);
-  }
-  if (req.url == "/admin/register") {
-    databaseResponse = await database.createAdmin(name, email, hashPassword);
-  }
+    let folderPath;
 
-  console.log(databaseResponse);
-  if (databaseResponse) {
+    if (req.url == "/register") {
+      databaseResponse = await database.createUser(name, email, hashPassword);
+      folderPath = './uploads/users/'
+    }
+    if (req.url == "/admin/register") {
+      databaseResponse = await database.createAdmin(name, email, hashPassword);
+      folderPath = './uploads/admins/';
+    }
+
+    //when user/admin register then create folder;
+    
+
+    try {
+      folderPath = folderPath+databaseResponse._id;
+      await fsPromises.mkdir(folderPath,{recursive:true});
+    } catch (error) {
+      console.log(error)
+    }
+
+    console.log(hashPassword);
+    console.log(name, email, password);
+    console.log("Register Sucessfull broooooooooooooooooooooo")
+    return res.status(200).json({ message: "Registration Sucessfull" });
+
+
+  } catch (error) {
+   // console.log(error.name);
+    console.log( error.message);
+    console.log("Error Showing Bro !")
     console.log("Email Already Register ");
     return res.status(403).json({ message: "Email Already Register" });
   }
-  console.log(hashPassword);
-  console.log(name, email, password);
-  return res.status(200).json({ message: "Registration Sucessfull" });
+  
+ 
+
+ 
+  
 };
 
 const login = async (req, res) => {
@@ -133,11 +157,15 @@ const forgetPassword = async (req, res) => {
   let databaseResponse;
   if (req.url == "/forgetPassword") {
     databaseResponse = await database.findUserByEmail(email);
-    console.log(databaseResponse);
+    
   }
   if (req.url == "/admin/forgetPassword") {
     databaseResponse = await database.findAdminByEmail(email);
   }
+
+
+  console.log(databaseResponse);
+
   // if user not found
   if (!databaseResponse) {
     return res.status(400).json({ message: "User Not Found" });

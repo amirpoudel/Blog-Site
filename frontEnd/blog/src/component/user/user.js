@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useReducer, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { login,logout } from "../../state/slices/authSlice";
 import CreatePost from "./post/createPost";
 
 import ShowArticles from "../showArticles";
@@ -16,8 +17,7 @@ export default function User() {
   
   const dispatch = useDispatch();
 
-  const { isLoggedIn } = useSelector((state) => state.authentication);
-  console.log(isLoggedIn);
+  
 
   const [user, setUser] = useState();
   const [profileImage,setProfileImage] = useState();
@@ -34,7 +34,7 @@ export default function User() {
 
   //function to send updated image data 
   async function updateProfilePic(){
-   
+    
     const res = await axios.put(url+'user/updateProfilePic',formData,{withCredentials:true});
 
     console.log(res);
@@ -77,6 +77,7 @@ export default function User() {
       });
 
     if (res.status == 200) {
+      dispatch(logout());
       return res;
     }
 
@@ -89,10 +90,7 @@ export default function User() {
     await logoutRequest().then((res) => {
       if (res.status == 200) {
         console.log(res);
-        dispatch({
-          type: "logout",
-          payload: false,
-        });
+        
       } else {
         console.log(res);
       }
@@ -113,6 +111,7 @@ export default function User() {
         }
         console.log(data.user);
         setUser(data.user);
+        dispatch(login(data.user))// store user data in redux store;
       });
     }
 
@@ -161,13 +160,7 @@ export default function User() {
         </>
       )}
 
-      {user && (
-        <Link to="/">
-          <button className="secondary-button" onClick={logoutHandle}>
-            Log out
-          </button>
-        </Link>
-      )}
+     
 
       {user && <CreatePost author={{ name: user.name }} />}
       {/* {

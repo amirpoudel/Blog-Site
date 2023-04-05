@@ -67,6 +67,7 @@ const postSchema = new Schema({
         type:String,
         required:true,
     },
+    
     title:{
         type:String,
         require:true,

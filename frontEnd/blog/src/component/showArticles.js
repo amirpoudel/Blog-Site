@@ -5,6 +5,10 @@ import { useNavigate } from "react-router-dom";
 export default function ShowArticles(props) {
   let articleUrl =  "article/";
   const navigate = useNavigate();
+
+  const imageURL = process.env.REACT_APP_URL 
+ 
+
   return (
     <>
      <Container>
@@ -15,7 +19,7 @@ export default function ShowArticles(props) {
                     <Card raised sx={{width:300 , maxWidth:345, }}>
                       <CardHeader
                       avatar={
-                        <Avatar>
+                        <Avatar src={imageURL+article.authorId.profileImagePath}>
 
                         </Avatar>
                         

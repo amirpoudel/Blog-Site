@@ -39,19 +39,7 @@ const getUser = async (req, res, next) => {
 const postArticle = async (req,res)=>{
    
     const userId =req.id //we recieve from previous function after verify token;
-
-    console.log("user Id",userId);
-    console.log(typeof userId)
-    console.log("incomming File.......",req.file);
-    console.log("incomming request.......",(req.body.post));
-    console.log(typeof req.body.post)
-
-
     const data = JSON.parse(req.body.post);//the data came from data form so parse string ;
-    console.log(typeof data);
-    console.log("Data After parser....",data);
- 
-
     //getting image from uploads folder
     let imagePath ;
     if(req.file){
@@ -63,7 +51,6 @@ const postArticle = async (req,res)=>{
     
     data.imagePath = imagePath
     console.log(data.imagePath);
-
     data.authorId = userId
     const databaseResponse = await database.createPost(data);
     console.log(databaseResponse);

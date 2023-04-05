@@ -4,13 +4,12 @@ const { verifyToken } = require('./controller/userController');
 const userController = require('./controller/userController');
 const globalController = require('./controller/globalController')
 const router = express.Router();
-const {upload,profilePic} = require('./controller/fileController');// multer storage....
+const {upload,profilePic,userProfileImage} = require('./controller/fileController');// multer storage....
 const adminController = require('./controller/adminController');
 const authController = require('./controller/authController');
-//home page
-// router.get("/",(req,res)=>{
-//     res.send("Hello World From Just Another Sever")
-// })
+
+
+
 
 router.get("/",globalController.getArticles)
 router.post("/info",globalController.info);
@@ -49,7 +48,7 @@ router.delete("/post/:postId",authController.verifyToken,userController.deletePo
 //request for single article from user page after user login -
 router.get("/user/article/:articleId",authController.verifyToken,userController.getSingleArticle);
 
-router.put("/user/updateProfilePic",authController.verifyToken,profilePic.single('profileImage'),userController.updateProfilePic)//update user profile picture
+router.put("/user/updateProfilePic",authController.verifyToken,userProfileImage.single('profileImage'))//update user profile picture
 
 
 
